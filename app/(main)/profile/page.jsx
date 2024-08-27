@@ -38,7 +38,7 @@ export default function ProfilePage() {
             <>
                 {boards?.map((brd) => {
                     return (
-                        <div className="relative shadow-sm transition-all duration-100 ease-in dark:bg-neutral-800 dark:hover:bg-neutral-700 bg-indigo-300 hover:bg-indigo-100 p-4 rounded-md">
+                        <div className="relative shadow-sm transition-all duration-100 ease-in dark:bg-neutral-800 dark:hover:bg-neutral-700 bg-indigo-300 hover:bg-indigo-100 p-4 rounded-md" key={brd.bid}>
                             <h1>{brd.name}</h1>
                             <h3>Codes: {brd.codes}</h3>
 
