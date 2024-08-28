@@ -99,9 +99,11 @@ const updateCodes = async (bid, codes) => {
     }
 };
 
-const getBoardInfo = async (bids) => {
+const getBoardInfo = async (uid) => {
+    const user = await getUser(uid);
+    const bids = user?.boards;
+
     const info = [];
-    console.log("Bids", bids);
 
     for (const bid of bids) {
         const board = await getBoard(bid);

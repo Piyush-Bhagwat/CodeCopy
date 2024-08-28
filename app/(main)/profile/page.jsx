@@ -6,14 +6,17 @@ import Link from "next/link";
 import { AiOutlineDelete } from "react-icons/ai";
 import { MdOutlineOpenInNew } from "react-icons/md";
 import { useContext, useEffect, useState } from "react";
+import SmallLoader from "@/components/SmallLoader";
 
 export default function ProfilePage() {
     const { user } = useContext(appContext);
     const [boards, setBoards] = useState([]);
 
+    const [deleteLoad, setDeleteLoad] = useState(false);
+
     const fetchBoards = async () => {
         if (user) {
-            const data = await getBoardInfo(user?.boards);
+            const data = await getBoardInfo(user?.uid);
             setBoards(data);
         } else {
             setBoards(null)
@@ -26,7 +29,11 @@ export default function ProfilePage() {
     }, [user]);
 
     const handleDelete = async (bid) => {
+        if(deleteLoad) return;
+
+        setDeleteLoad(bid);
         await deleteBoard(bid, user.uid);
+        setDeleteLoad(false);
 
         setBoards((p) => {
             return p.filter((i) => i.bid !== bid);
@@ -47,7 +54,7 @@ export default function ProfilePage() {
                                     onClick={() => handleDelete(brd.bid)}
                                     className="text-xl hover:bg-indigo-300 dark:hover:bg-neutral-800 hover:shadow-md active:scale-90 transition-all p-2 rounded-full"
                                 >
-                                    <AiOutlineDelete />
+                                    {deleteLoad == brd.bid ? <SmallLoader/> : <AiOutlineDelete />}
                                 </button>
                                 <Link
                                     href={`board/${brd.bid}`}
