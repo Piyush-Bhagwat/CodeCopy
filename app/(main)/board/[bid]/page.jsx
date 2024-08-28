@@ -17,6 +17,8 @@ import {
     updateCodes,
 } from "@/firebase/firebase.db";
 import EditModel from "@/components/EditModel";
+import { AiOutlineReload } from "react-icons/ai";
+import SmallLoader from "@/components/SmallLoader";
 
 export default function BoardPage({ params }) {
     const className = {
@@ -39,7 +41,9 @@ export default function BoardPage({ params }) {
     const [boardTitleEdit, setBoardTitleEdit] = useState(false);
     const [boardTitle, setBoardTitle] = useState("");
 
- 
+    //loader Variables
+    const [saveLoading, setSaveLoading] = useState(false);
+    const [addCodeLoading, setAddCodeLoding] = useState(false);
 
     //fetchers
     const fetchBoard = async () => {
@@ -67,8 +71,11 @@ export default function BoardPage({ params }) {
 
     useEffect(() => {
         async function update() {
+            setSaveLoading(true);
             await updateCodes(board?.bid, codes);
+            setSaveLoading(false);
         }
+
         if (codes && board && user) {
             update();
         }
@@ -77,7 +84,12 @@ export default function BoardPage({ params }) {
     //handlers
 
     const handleAddCode = async () => {
+        if (addCodeLoading) return;
+
+        setAddCodeLoding(true);
         await addCode(board?.bid);
+        setAddCodeLoding(false);
+
         setCodes((p) => [
             ...p,
             {
@@ -126,7 +138,8 @@ export default function BoardPage({ params }) {
                             }}
                             onChange={(e) => setCurCodeName(e.target.value)}
                             className={`${className.sideEle} ${
-                                activeCodeIdx == id && "dark:bg-neutral-600 bg-indigo-300"
+                                activeCodeIdx == id &&
+                                "dark:bg-neutral-600 bg-indigo-300"
                             } ${
                                 isEditing &&
                                 activeCodeIdx == id &&
@@ -163,19 +176,23 @@ export default function BoardPage({ params }) {
 
                     {user?.uid == board?.uid && (
                         <button
-                            onClick={() => setBoardTitleEdit(true)}
+                            onClick={() =>
+                                !saveLoading && setBoardTitleEdit(true)
+                            }
                             className="absolute top-0 right-6 p-2 dark:hover:bg-neutral-700 hover:bg-indigo-300 active:scale-90 rounded-full"
                         >
-                            <FiEdit2 />
+                            {saveLoading ? <SmallLoader /> : <FiEdit2 />}
                         </button>
                     )}
                     {boardTitleEdit && (
                         <EditModel
                             value={boardTitle}
                             setValue={setBoardTitle}
-                            onSave={() =>
-                                updateBoardTitle(board?.bid, boardTitle)
-                            }
+                            onSave={async () => {
+                                setSaveLoading(true);
+                                await updateBoardTitle(board?.bid, boardTitle);
+                                setSaveLoading(false);
+                            }}
                             title="Set Board Name"
                             setVisiblity={setBoardTitleEdit}
                             max={14}
@@ -190,7 +207,7 @@ export default function BoardPage({ params }) {
                         className={`${className.sideEle} flex justify-center items-center gap-2`}
                         onClick={handleAddCode}
                     >
-                        Add Code <FiPlus />
+                        Add Code {addCodeLoading ? <SmallLoader /> : <FiPlus />}
                     </button>
                 )}
             </GridCell>
@@ -241,7 +258,7 @@ export default function BoardPage({ params }) {
                     className="rounded-md p-3"
                 />
 
-                <div className="absolute bottom-5 right-5">
+                <div className="absolute bottom-8 right-5">
                     <button
                         className={className.controlBtn}
                         data-tooltip-id="my-tooltip"
@@ -276,9 +293,11 @@ export default function BoardPage({ params }) {
                                 data-tooltip-id="my-tooltip"
                                 data-tooltip-content="Edit"
                                 data-tooltip-place="bottom"
-                                onClick={() => setIsEditing(true)}
+                                onClick={() => {
+                                    !saveLoading && setIsEditing(true);
+                                }}
                             >
-                                <FiEdit2 />
+                                {saveLoading ? <SmallLoader /> : <FiEdit2 />}
                             </button>
                         ))}
                 </div>
