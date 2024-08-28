@@ -12,7 +12,7 @@ const NewBoardPage = () => {
 
     return (
         <div
-            className={`fixed top-0 left-0 flex justify-center items-center w-full h-[100vh] dark:bg-black ${
+            className={`fixed top-0 left-0 flex justify-center items-center w-full h-[100vh] bg-white dark:bg-black ${
                 dark && "dark"
             }`}
         >
