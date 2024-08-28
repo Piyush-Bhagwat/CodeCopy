@@ -6,6 +6,7 @@ import { Tooltip } from "react-tooltip";
 import { appContext } from "@/context/AppContext";
 import Link from "next/link";
 import EditModel from "@/components/EditModel";
+import SmallLoader from "@/components/SmallLoader";
 
 const Mainlayout = ({ children }) => {
     const className = {
@@ -22,12 +23,15 @@ const Mainlayout = ({ children }) => {
     const [newBoardEdit, setNewBoardEdit] = useState(false);
     const [newBoardTitle, setNewBoardTitle] = useState("");
 
+    const [newBoardLoad, setNewBoardLoad] = useState(false);
+
     //handlers
     const handleNewBoard = () => {
         if (!user) {
             alert("Please Login");
             return;
         }
+        if (newBoardLoad) return;
         setNewBoardEdit(true);
     };
 
@@ -52,8 +56,8 @@ const Mainlayout = ({ children }) => {
                 className="flex justify-between items-center"
             >
                 <div>
-                    <button className={className.btn} onClick={handleNewBoard}>
-                        newBoard
+                    <button className={`${className.btn} inline-flex gap-2`} onClick={handleNewBoard}>
+                        newBoard {newBoardLoad && <SmallLoader />}
                     </button>
                     {newBoardEdit && (
                         <EditModel
@@ -62,7 +66,11 @@ const Mainlayout = ({ children }) => {
                             setValue={setNewBoardTitle}
                             setVisiblity={setNewBoardEdit}
                             max={14}
-                            onSave={() => newBoard(newBoardTitle)}
+                            onSave={async () => {
+                                setNewBoardLoad(true);
+                                await newBoard(newBoardTitle);
+                                setNewBoardLoad(false);
+                            }}
                         />
                     )}
                     {user && (
