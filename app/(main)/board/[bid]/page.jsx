@@ -17,14 +17,14 @@ import {
     updateCodes,
 } from "@/firebase/firebase.db";
 import EditModel from "@/components/EditModel";
-import { AiOutlineReload } from "react-icons/ai";
+import { AiOutlineDelete, AiOutlineReload } from "react-icons/ai";
 import SmallLoader from "@/components/SmallLoader";
 
 export default function BoardPage({ params }) {
     const className = {
         btn: "dark:hover:bg-neutral-800 hover:bg-indigo-100 dark:hover:shadow-md active:scale-95 transition-all duration-75 px-3 py-1 rounded-full",
         sideEle:
-            "dark:bg-neutral-800 bg-indigo-100 mr-5 px-2 py-1 rounded-md outline-2 w-10/12 active:scale-95 transition-all duration-75 dark:outline-neutral-600 outline-indigo-400 mb-2 hover:outline focus-visible:outline-none focus-visible:ring-transparent",
+            "dark:bg-neutral-800 bg-indigo-100 px-2 py-1 rounded-md outline-2 w-10/12 active:scale-95 transition-all duration-75 dark:outline-neutral-600 outline-indigo-400 hover:outline focus-visible:outline-none focus-visible:ring-transparent",
         controlBtn:
             "dark:text-white text-2xl transition-all duration-75 outline-dashed outline-2 dark:outline-neutral-600 outline-indigo-400 p-3 dark:hover:bg-neutral-800 hover:bg-indigo-100 active:scale-95 ml-3 rounded-lg",
         extraClasses: "dark:bg-neutral-600",
@@ -45,6 +45,7 @@ export default function BoardPage({ params }) {
     //loader Variables
     const [saveLoading, setSaveLoading] = useState(false);
     const [addCodeLoading, setAddCodeLoding] = useState(false);
+    const [deleteLoad, setDeleteLoad] = useState(false);
 
     //fetchers
     const fetchBoard = async () => {
@@ -124,6 +125,13 @@ export default function BoardPage({ params }) {
         });
     };
 
+    const handleDelete = async (id) => {
+        const newCodes = [...codes];
+        newCodes.splice(id, 1);
+
+        setCodes(newCodes);
+    };
+
     //renderers
 
     const renderCodeCards = () => {
@@ -131,29 +139,43 @@ export default function BoardPage({ params }) {
             <>
                 {codes?.map((code, id) => {
                     return (
-                        <input
-                            key={id}
-                            type="text"
-                            onClick={() => {
-                                setActiveCodeIdx(id);
-                            }}
-                            onChange={(e) => setCurCodeName(e.target.value)}
-                            className={`${
-                                activeCodeIdx == id &&
-                                "dark:bg-zinc-700 bg-indigo-300"
-                            } ${
-                                isEditing &&
-                                activeCodeIdx == id &&
-                                "border-2 border-dashed dark:border-neutral-400 border-neutral-800"
-                            } ${className.sideEle}`}
-                            value={
-                                isEditing && activeCodeIdx == id
-                                    ? curCodeName
-                                    : code.name
-                            }
-                            readOnly={!isEditing && activeCodeIdx == id}
-                            maxLength={16}
-                        />
+                        <div className="flex items-center mb-2 gap-2">
+                            <input
+                                key={id}
+                                type="text"
+                                onClick={() => {
+                                    setActiveCodeIdx(id);
+                                }}
+                                onChange={(e) => setCurCodeName(e.target.value)}
+                                className={`${
+                                    activeCodeIdx == id &&
+                                    "dark:bg-zinc-700 bg-indigo-300"
+                                } ${
+                                    isEditing &&
+                                    activeCodeIdx == id &&
+                                    "border-2 border-dashed dark:border-neutral-400 border-neutral-800"
+                                } ${className.sideEle}`}
+                                value={
+                                    isEditing && activeCodeIdx == id
+                                        ? curCodeName
+                                        : code.name
+                                }
+                                readOnly={!isEditing && activeCodeIdx == id}
+                                maxLength={16}
+                            />
+                            {activeCodeIdx == id && (
+                                <button
+                                    className="text-xl hover:bg-indigo-300 dark:hover:bg-neutral-800 hover:shadow-md active:scale-90 transition-all p-2 rounded-full"
+                                    onClick={() => handleDelete(id)}
+                                >
+                                    {saveLoading ? (
+                                        <SmallLoader />
+                                    ) : (
+                                        <AiOutlineDelete />
+                                    )}
+                                </button>
+                            )}
+                        </div>
                     );
                 })}
             </>
@@ -167,7 +189,7 @@ export default function BoardPage({ params }) {
                 colStart={1}
                 colSpan={2}
                 rowSpan={8}
-                className="rounded-l-none pl-4"
+                className="rounded-l-none pl-4 overflow-auto relative"
             >
                 <div className="mb-4 relative">
                     <h1 className="text-xl font-bold">{boardTitle}</h1>
@@ -265,6 +287,7 @@ export default function BoardPage({ params }) {
                         data-tooltip-id="my-tooltip"
                         data-tooltip-content="Copy"
                         data-tooltip-place="bottom"
+                        onClick={() => navigator.clipboard.writeText(code)}
                     >
                         <FiCopy />
                     </button>
@@ -273,6 +296,12 @@ export default function BoardPage({ params }) {
                         data-tooltip-id="my-tooltip"
                         data-tooltip-content="Share"
                         data-tooltip-place="bottom"
+                        onClick={() =>
+                            board &&
+                            navigator.clipboard.writeText(
+                                `https://code-copy-dusky.vercel.app/board/${board?.bid}`
+                            )
+                        }
                     >
                         <FiShare />
                     </button>
