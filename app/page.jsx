@@ -1,14 +1,16 @@
 "use client";
 import { appContext } from "@/context/AppContext";
-import { MdLightMode, MdNightlife, MdNightlight } from "react-icons/md";
+import { MdLightMode, MdNightlight } from "react-icons/md";
 import React, { useContext } from "react";
 import Link from "next/link";
+import SmallLoader from "@/components/SmallLoader";
 
 const HomePage = () => {
-    const { dark, user, login, setDark } = useContext(appContext);
+    const { dark, user, login, setDark, userLoading } = useContext(appContext);
     const className = {
         btn: " rounded-full active:scale-95 transition-all",
     };
+    
     return (
         <div
             className={`flex items-center transition-all duration-300 ${
@@ -34,9 +36,9 @@ const HomePage = () => {
                     ) : (
                         <button
                             onClick={login}
-                            className={`${className.btn} hover:bg-indigo-400 dark:hover:bg-neutral-400 px-5 py-2 bg-indigo-500 dark:bg-neutral-300 text-white dark:text-black`}
+                            className={`${className.btn} flex items-center gap-2 hover:bg-indigo-400 dark:hover:bg-neutral-400 px-5 py-2 bg-indigo-500 dark:bg-neutral-300 text-white dark:text-black`}
                         >
-                            Login
+                            Login {userLoading && <SmallLoader />}
                         </button>
                     )}
                     <button

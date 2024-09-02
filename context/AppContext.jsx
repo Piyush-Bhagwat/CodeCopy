@@ -7,19 +7,30 @@ import React, { createContext, useEffect, useState } from "react";
 export const appContext = createContext(null);
 
 const AppContext = ({ children }) => {
-    const [dark, setDark] = useState(true);
+    const [dark, setDark] = useState("null");
     const [user, setUser] = useState(null);
+    const [userLoading, setUserLoading] = useState(true);
     const [isEditing, setIsEditing] = useState(false);
 
     const router = useRouter();
 
     const fetchUser = async (uid) => {
+        setUserLoading(true);
         const data = await getUser(uid);
+        setUserLoading(false);
         setUser(data);
     };
 
     useEffect(() => {
+        if (dark !== "null") {
+            localStorage.setItem("theme", JSON.stringify(dark));
+        }
+    }, [dark]);
+
+    useEffect(() => {
         const lsUser = JSON.parse(localStorage.getItem("user"));
+        const theme = JSON.parse(localStorage.getItem("theme"));
+        setDark(theme);
         if (lsUser) {
             fetchUser(lsUser.uid);
         }
@@ -52,6 +63,7 @@ const AppContext = ({ children }) => {
         newBoard,
         logout,
         setIsEditing,
+        userLoading,
         isEditing,
     };
     return <appContext.Provider value={val}>{children}</appContext.Provider>;
