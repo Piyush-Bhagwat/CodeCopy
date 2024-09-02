@@ -43,10 +43,10 @@ const Mainlayout = ({ children }) => {
         >
             <GridCell
                 rowStart={2}
-                colSpan={2}
+                colSpan={2} 
                 className="rounded-l-none flex items-center justify-center"
             >
-                <h1 className="text-xl font-bold tracking-wider">Copy Code</h1>
+                <Link href="/" className="text-xl font-bold tracking-wider">Copy Code</Link>
             </GridCell>
 
             <GridCell
