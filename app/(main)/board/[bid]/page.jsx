@@ -139,7 +139,7 @@ export default function BoardPage({ params }) {
             <>
                 {codes?.map((code, id) => {
                     return (
-                        <div className="flex items-center mb-2 gap-2">
+                        <div className="flex items-center mb-2 gap-2" key={id}>
                             <input
                                 key={id}
                                 type="text"
