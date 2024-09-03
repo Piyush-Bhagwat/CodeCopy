@@ -18,10 +18,10 @@ const HomePage = () => {
             } justify-center w-full h-[100vh] dark:bg-black dark:text-neutral-200`}
         >
             <div>
-                <h1 className="transition-all text-6xl font-bold mb-2">
+                <h1 className="transition-all text-5xl md:text-6xl font-bold mb-2">
                     copy_code
                 </h1>
-                <h3 className="text-lg mb-5 transition-all">
+                <h3 className=" md:text-lg mb-5 transition-all">
                     Store and Share Code Snippets
                 </h3>
 
