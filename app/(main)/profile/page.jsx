@@ -77,9 +77,9 @@ export default function ProfilePage() {
                 colStart={1}
                 colSpan={2}
                 rowSpan={8}
-                className="rounded-l-none pl-4"
+                className="md:rounded-l-none pl-4"
             >
-                <div className="mb-4">
+                <div className="md:mb-4">
                     <h1 className="text-xl font-bold">{user?.displayName}</h1>
                 </div>
             </GridCell>
@@ -89,7 +89,7 @@ export default function ProfilePage() {
                 colStart={4}
                 colSpan={8}
                 rowSpan={8}
-                className="grid grid-cols-5 auto-rows-[100px] gap-3"
+                className="flex flex-col h-full overflow-auto md:grid grid-cols-5 auto-rows-[100px] gap-3"
             >
                 {renderBoards()}
             </GridCell>

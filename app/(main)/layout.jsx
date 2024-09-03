@@ -1,6 +1,6 @@
 "use client";
 import GridCell from "@/components/GridCell";
-import { FiSave } from "react-icons/fi";
+import { FiMenu, FiSave } from "react-icons/fi";
 import { useContext, useState } from "react";
 import { Tooltip } from "react-tooltip";
 import { appContext } from "@/context/AppContext";
@@ -22,7 +22,7 @@ const Mainlayout = ({ children }) => {
 
     const [newBoardEdit, setNewBoardEdit] = useState(false);
     const [newBoardTitle, setNewBoardTitle] = useState("");
-
+    const [menuOpen, setMenuOpen] = useState(false);
     const [newBoardLoad, setNewBoardLoad] = useState(false);
 
     //handlers
@@ -37,16 +37,18 @@ const Mainlayout = ({ children }) => {
 
     return (
         <main
-            className={`grid  grid-cols-12 grid-rows-12 gap-2 h-[100vh] dark:bg-black ${
+            className={`md:grid flex flex-col grid-cols-12 grid-rows-12 p-2 md:p-0 gap-2 h-[100vh] dark:bg-black ${
                 dark && "dark"
             }`}
         >
             <GridCell
                 rowStart={2}
-                colSpan={2} 
-                className="rounded-l-none flex items-center justify-center"
+                colSpan={2}
+                className="rounded-l-none hidden md:flex items-center justify-center"
             >
-                <Link href="/" className="text-xl font-bold tracking-wider">Copy Code</Link>
+                <Link href="/" className="text-xl font-bold tracking-wider">
+                    Copy Code
+                </Link>
             </GridCell>
 
             <GridCell
@@ -55,8 +57,11 @@ const Mainlayout = ({ children }) => {
                 colSpan={8}
                 className="flex justify-between items-center"
             >
-                <div>
-                    <button className={`${className.btn} inline-flex gap-2`} onClick={handleNewBoard}>
+                <div className={`fixed md:static top-10 z-50 rounded-lg ${menuOpen ? "left-0" : "-left-[100%]"} md:shadow-none shadow-md transition-all ease-in-out flex flex-col md:block md:bg-transparent bg-neutral-800 items-center`}>
+                    <button
+                        className={`${className.btn} inline-flex gap-2`}
+                        onClick={handleNewBoard}
+                    >
                         newBoard {newBoardLoad && <SmallLoader />}
                     </button>
                     {newBoardEdit && (
@@ -85,6 +90,10 @@ const Mainlayout = ({ children }) => {
                         theme
                     </button>
                 </div>
+
+                <button className="md:hidden" onClick={() => setMenuOpen(m => !m)}>
+                    <FiMenu />
+                </button>
 
                 {!user && (
                     <p className="text-neutral-600 text-sm">
