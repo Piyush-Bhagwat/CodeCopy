@@ -122,14 +122,14 @@ const Mainlayout = ({ children }) => {
 
             <div className="dark:text-white fixed bottom-5 left-2 text-sm">
                 Created By{" "}
-                <a className="text-blue-600" href="#">
-                    abNormal
+                <a className="text-blue-600" target="_blank" href="https://piyushs-portfolio.netlify.app/">
+                    abNormal {""}
                 </a>
             </div>
 
             <Tooltip id="my-tooltip" />
         </main>
     );
-};
+}; 
 
 export default Mainlayout;

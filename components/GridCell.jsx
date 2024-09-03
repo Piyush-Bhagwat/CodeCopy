@@ -16,7 +16,7 @@ const GridCell = ({
         >
             {children}
         </div>
-    );
+    ); 
 };
 
 export default GridCell;

@@ -20,19 +20,21 @@ const AppContext = ({ children }) => {
         setUserLoading(false);
         setUser(data);
     };
-
+    
     useEffect(() => {
         if (dark !== "null") {
             localStorage.setItem("theme", JSON.stringify(dark));
         }
     }, [dark]);
-
+    
     useEffect(() => {
         const lsUser = JSON.parse(localStorage.getItem("user"));
         const theme = JSON.parse(localStorage.getItem("theme"));
         setDark(theme);
         if (lsUser) {
             fetchUser(lsUser.uid);
+        } else {
+            setUserLoading(false);
         }
     }, []);
 
