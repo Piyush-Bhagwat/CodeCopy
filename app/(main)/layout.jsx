@@ -91,7 +91,7 @@ const Mainlayout = ({ children }) => {
                     </button>
                 </div>
 
-                <button className="md:hidden" onClick={() => setMenuOpen(m => !m)}>
+                <button className="md:hidden active:scale-90 transition-all duration-75" onClick={() => setMenuOpen(m => !m)}>
                     <FiMenu />
                 </button>
 

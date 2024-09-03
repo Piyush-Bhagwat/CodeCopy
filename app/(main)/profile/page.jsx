@@ -45,20 +45,20 @@ export default function ProfilePage() {
             <>
                 {boards?.map((brd, id) => {
                     return (
-                        <div className="relative shadow-sm transition-all duration-100 ease-in dark:bg-neutral-800 dark:hover:bg-neutral-700 bg-indigo-300 hover:bg-indigo-100 p-4 rounded-md" key={id}>
+                        <div className="relative shadow-sm transition-all duration-100 ease-in dark:bg-neutral-800 md:dark:hover:bg-neutral-700 bg-indigo-300 md:hover:bg-indigo-100 p-4 rounded-md" key={id}>
                             <h1>{brd.name}</h1>
                             <h3>Codes: {brd.codes}</h3>
 
                             <div className="absolute bottom-2 right-2 flex gap-1">
                                 <button
                                     onClick={() => handleDelete(brd.bid)}
-                                    className="text-xl hover:bg-indigo-300 dark:hover:bg-neutral-800 hover:shadow-md active:scale-90 transition-all p-2 rounded-full"
+                                    className="text-xl md:hover:bg-indigo-300 md:dark:hover:bg-neutral-800 md:hover:shadow-md active:scale-90 transition-all p-2 rounded-full"
                                 >
                                     {deleteLoad == brd.bid ? <SmallLoader/> : <AiOutlineDelete />}
                                 </button>
                                 <Link
                                     href={`board/${brd.bid}`}
-                                    className="text-xl hover:bg-indigo-300 dark:hover:bg-neutral-800 hover:shadow-md active:scale-90 transition-all p-2 rounded-full"
+                                    className="text-xl md:hover:bg-indigo-300 md:dark:hover:bg-neutral-800 md:hover:shadow-md active:scale-90 transition-all p-2 rounded-full"
                                 >
                                     <MdOutlineOpenInNew />
                                 </Link>

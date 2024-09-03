@@ -5,7 +5,14 @@ import "ace-builds/src-noconflict/mode-javascript";
 import "ace-builds/src-noconflict/theme-terminal";
 import "ace-builds/src-noconflict/theme-github";
 import "ace-builds/src-noconflict/ext-language_tools";
-import { FiCopy, FiEdit2, FiPlus, FiSave, FiShare } from "react-icons/fi";
+import {
+    FiCopy,
+    FiEdit2,
+    FiMenu,
+    FiPlus,
+    FiSave,
+    FiShare,
+} from "react-icons/fi";
 import { useContext, useEffect, useState } from "react";
 import { Tooltip } from "react-tooltip";
 import { appContext } from "@/context/AppContext";
@@ -22,11 +29,11 @@ import SmallLoader from "@/components/SmallLoader";
 
 export default function BoardPage({ params }) {
     const className = {
-        btn: "dark:hover:bg-neutral-800 hover:bg-indigo-100 dark:hover:shadow-md active:scale-95 transition-all duration-75 px-3 py-1 rounded-full",
+        btn: "md:dark:hover:bg-neutral-800 md:hover:bg-indigo-100 md:dark:hover:shadow-md active:scale-95 transition-all duration-75 px-3 py-1 rounded-full",
         sideEle:
-            "dark:bg-neutral-800 bg-indigo-100 px-2 py-1 rounded-md outline-2 w-10/12 active:scale-95 transition-all duration-75 dark:outline-neutral-600 outline-indigo-400 hover:outline focus-visible:outline-none focus-visible:ring-transparent",
+            "dark:bg-neutral-800 bg-indigo-100 px-2 py-1 rounded-md outline-2 w-10/12 active:scale-95 transition-all duration-75 dark:outline-neutral-600 outline-indigo-400 md:hover:outline focus-visible:outline-none focus-visible:ring-transparent",
         controlBtn:
-            "dark:text-white text-2xl transition-all duration-75 outline-dashed outline-2 dark:outline-neutral-600 outline-indigo-400 p-3 dark:hover:bg-neutral-800 hover:bg-indigo-100 active:scale-95 ml-3 rounded-lg",
+            "dark:text-white text-2xl transition-all duration-75 outline-dashed outline-2 dark:outline-neutral-600 outline-indigo-400 p-2 md:p-3 md:dark:hover:bg-neutral-800 md:hover:bg-indigo-100 active:scale-95 ml-3 rounded-lg",
         extraClasses: "dark:bg-neutral-600",
     };
 
@@ -41,11 +48,11 @@ export default function BoardPage({ params }) {
     const [curCodeName, setCurCodeName] = useState("");
     const [boardTitleEdit, setBoardTitleEdit] = useState(false);
     const [boardTitle, setBoardTitle] = useState("");
+    const [menuOpen, setMenuOpen] = useState(false);
 
     //loader Variables
     const [saveLoading, setSaveLoading] = useState(false);
     const [addCodeLoading, setAddCodeLoding] = useState(false);
-    const [deleteLoad, setDeleteLoad] = useState(false);
 
     //fetchers
     const fetchBoard = async () => {
@@ -221,18 +228,31 @@ export default function BoardPage({ params }) {
                             max={14}
                         />
                     )}
+                    <button
+                        onClick={() => setMenuOpen((m) => !m)}
+                        className="absolute md:hidden top-0 right-12 p-2 md:dark:hover:bg-neutral-700 md:hover:bg-indigo-300 active:scale-90 rounded-full"
+                    >
+                        <FiMenu />
+                    </button>
                 </div>
 
-                {renderCodeCards()}
+                <div
+                    className={`${
+                        menuOpen ? "max-h-32" : "h-0 hidden"
+                    } md:visible md:block transition-all md:h-fit `}
+                >
+                    {renderCodeCards()}
 
-                {user?.uid == board?.uid && board && (
-                    <button
-                        className={`${className.sideEle} flex justify-center items-center gap-2`}
-                        onClick={handleAddCode}
-                    >
-                        Add Code {addCodeLoading ? <SmallLoader /> : <FiPlus />}
-                    </button>
-                )}
+                    {user?.uid == board?.uid && board && (
+                        <button
+                            className={`${className.sideEle} flex justify-center items-center gap-2`}
+                            onClick={handleAddCode}
+                        >
+                            Add Code{" "}
+                            {addCodeLoading ? <SmallLoader /> : <FiPlus />}
+                        </button>
+                    )}
+                </div>
             </GridCell>
 
             <GridCell
@@ -240,7 +260,7 @@ export default function BoardPage({ params }) {
                 colStart={4}
                 colSpan={8}
                 rowSpan={8}
-                className="relative"
+                className="relative h-full"
             >
                 <select
                     onChange={(e) => {
@@ -248,7 +268,7 @@ export default function BoardPage({ params }) {
                         console.log(e.target.value);
                     }}
                     value={mode}
-                    className="absolute top-3 right-3 z-20 rounded-md outline-dashed outline-2 px-3 py-1 outline-indigo-400 dark:outline-neutral-600 dark:bg-neutral-900"
+                    className="absolute top-3 right-3 z-20 rounded-md outline-dashed outline-2 md:px-3 md:py-1 p-1 outline-indigo-400 dark:outline-neutral-600 dark:bg-neutral-900"
                     disabled={!isEditing}
                 >
                     <option value="javascript">javascript</option>
