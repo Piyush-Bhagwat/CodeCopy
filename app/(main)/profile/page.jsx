@@ -13,14 +13,17 @@ export default function ProfilePage() {
     const [boards, setBoards] = useState([]);
 
     const [deleteLoad, setDeleteLoad] = useState(false);
+    const [boardLoad, setBoardLoad] = useState(true);
 
     const fetchBoards = async () => {
+        setBoardLoad(true);
         if (user) {
             const data = await getBoardInfo(user?.uid);
             setBoards(data);
         } else {
             setBoards(null)
         }
+        setBoardLoad(false);
     };
 
     useEffect(() => {
@@ -89,8 +92,9 @@ export default function ProfilePage() {
                 colStart={4}
                 colSpan={8}
                 rowSpan={8}
-                className="flex flex-col h-full overflow-auto md:grid grid-cols-5 auto-rows-[100px] gap-3"
+                className={`${boardLoad && "animate-pulse"} flex flex-col h-full overflow-auto md:grid grid-cols-5 auto-rows-[100px] gap-3`}
             >
+                {boardLoad && <SmallLoader />}
                 {renderBoards()}
             </GridCell>
 
