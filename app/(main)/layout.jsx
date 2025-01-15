@@ -57,7 +57,7 @@ const Mainlayout = ({ children }) => {
                 colSpan={8}
                 className="flex justify-between items-center"
             >
-                <div className={`fixed md:static top-10 z-50 rounded-lg ${menuOpen ? "left-0" : "-left-[100%]"} md:shadow-none shadow-md transition-all ease-in-out flex flex-col md:block md:bg-transparent bg-neutral-800 items-center`}>
+                <div className={`fixed md:static top-10 z-50 rounded-lg ${menuOpen ? "left-0" : "-left-[30%]"} md:shadow-none shadow-md transition-all duration-300 ease-in-out flex flex-col md:block md:dark:bg-transparent md:bg-transparent bg-indigo-300 dark:bg-neutral-800 items-center`}>
                     <button
                         className={`${className.btn} inline-flex gap-2`}
                         onClick={handleNewBoard}

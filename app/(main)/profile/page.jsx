@@ -94,7 +94,9 @@ export default function ProfilePage() {
                 rowSpan={8}
                 className={`${boardLoad && "animate-pulse"} flex flex-col h-full overflow-auto md:grid grid-cols-5 auto-rows-[100px] gap-3`}
             >
-                {boardLoad && <SmallLoader />}
+                {boardLoad && <SmallLoader />
+                
+                }
                 {renderBoards()}
             </GridCell>
 

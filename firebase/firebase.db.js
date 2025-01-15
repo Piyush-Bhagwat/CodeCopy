@@ -47,6 +47,7 @@ const createNewBoard = async (uid, name = "NewBoard") => {
         name,
         uid,
         bid,
+        visibility: true,
         codes: [],
     };
 
@@ -131,6 +132,18 @@ const deleteBoard = async (bid, uid) => {
     await updateDoc(userRef, { boards: arrayRemove(bid) });
 };
 
+const updateBoardVisibility = async (bid, visibility) => {
+    const boardRef = doc(db, "board", bid);
+    await updateDoc(boardRef, { visibility });
+} 
+
+const getBoardVisiblity = async (bid) => {  
+    const board = await getBoard(bid);
+
+    return board ? {visibility: board.visibility, uid: board.uid} : null;
+    
+}
+
 export {
     getUser,
     addUser,
@@ -141,5 +154,7 @@ export {
     updateBoardTitle,
     getBoard,
     createNewBoard,
+    updateBoardVisibility,
+    getBoardVisiblity,
     updateCodes,
 };
