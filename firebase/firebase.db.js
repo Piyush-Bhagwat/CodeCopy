@@ -33,6 +33,15 @@ const addUser = async (data) => {
     console.log("User created", data.displayName);
 };
 
+const updateAbout = async (uid, about) => {
+    try {
+        const user = doc(db, "user", uid);
+        await updateDoc(user, { about });
+    } catch (e) {
+        console.error(e);
+    }
+};
+
 //Board Functions
 
 const createNewBoard = async (uid, name = "NewBoard") => {
@@ -164,4 +173,5 @@ export {
     updateBoardVisibility,
     getBoardVisiblity,
     updateCodes,
+    updateAbout,
 };
