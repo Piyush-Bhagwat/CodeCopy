@@ -48,7 +48,15 @@ const createNewBoard = async (uid, name = "NewBoard") => {
         uid,
         bid,
         visibility: true,
-        codes: [],
+        codes: [
+            {
+                code: "",
+                copies: 0,
+                language: "javascript",
+                name: "new Code 1",
+                time: Date.now(),
+            },
+        ],
     };
 
     await setDoc(doc(db, "board", bid), emptyBoard);
@@ -135,14 +143,13 @@ const deleteBoard = async (bid, uid) => {
 const updateBoardVisibility = async (bid, visibility) => {
     const boardRef = doc(db, "board", bid);
     await updateDoc(boardRef, { visibility });
-} 
+};
 
-const getBoardVisiblity = async (bid) => {  
+const getBoardVisiblity = async (bid) => {
     const board = await getBoard(bid);
 
-    return board ? {visibility: board.visibility, uid: board.uid} : null;
-    
-}
+    return board ? { visibility: board.visibility, uid: board.uid } : null;
+};
 
 export {
     getUser,

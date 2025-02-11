@@ -14,6 +14,7 @@ import {
     FiSave,
     FiShare,
     FiUnlock,
+    FiX,
 } from "react-icons/fi";
 import { useContext, useEffect, useState } from "react";
 import { Tooltip } from "react-tooltip";
@@ -56,6 +57,7 @@ export default function BoardPage({ params }) {
     const [menuOpen, setMenuOpen] = useState(false);
     const [boardVisiblity, setBoardVisiblity] = useState(false);
     const [fetchable, setFetchable] = useState(false);
+    const [oldCode, setOldCode] = useState("");
 
     //loader Variables
     const [boardLoading, setBoardLoading] = useState(true);
@@ -69,6 +71,7 @@ export default function BoardPage({ params }) {
         if (!fetchedBoard) return;
         const boardUserName = await getUserName(fetchedBoard?.uid);
         setCodes(fetchedBoard?.codes);
+        setBoardVisiblity(await getBoardVisiblity(params.bid));
         setBoardTitle(fetchedBoard?.name);
         setBoard({ ...fetchedBoard, userName: boardUserName });
     };
@@ -79,6 +82,7 @@ export default function BoardPage({ params }) {
         if (fetchedVisiblity) {
             const uid = fetchedVisiblity.uid;
             const visiblity = fetchedVisiblity.visibility;
+            // setBoardVisiblity(fetchBoardVisiblity);
 
             if (visiblity || user?.uid == uid) {
                 console.log("fetchable");
@@ -100,6 +104,7 @@ export default function BoardPage({ params }) {
 
     useEffect(() => {
         setCode(codes[activeCodeIdx]?.code);
+        setOldCode(codes[activeCodeIdx]?.code);
         setMode(codes[activeCodeIdx]?.language);
         setCurCodeName(codes[activeCodeIdx]?.name);
         console.log(activeCodeIdx);
@@ -158,6 +163,7 @@ export default function BoardPage({ params }) {
 
     const handleSave = async () => {
         setIsEditing(false);
+        setOldCode(code);
         setCodes((p) => {
             return p?.map((cod, id) => {
                 if (id == activeCodeIdx) {
@@ -184,8 +190,12 @@ export default function BoardPage({ params }) {
         setCodes(newCodes);
     };
 
-    //renderers
+    const handleCodeEditCancle = () => {
+        setCode(oldCode);
+        setIsEditing(false);
+    };
 
+    //renderers
     const renderCodeCards = () => {
         return (
             <>
@@ -429,35 +439,46 @@ export default function BoardPage({ params }) {
                         >
                             <FiShare />
                         </button>
-                        {user?.uid == board?.uid &&
-                            board &&
-                            (isEditing ? (
-                                <button
-                                    className={`${className.controlBtn} bg-indigo-200 dark:bg-neutral-700 animate-pulse`}
-                                    data-tooltip-id="my-tooltip"
-                                    data-tooltip-content="Save"
-                                    data-tooltip-place="bottom"
-                                    onClick={handleSave}
-                                >
-                                    <FiSave />
-                                </button>
-                            ) : (
-                                <button
-                                    className={className.controlBtn}
-                                    data-tooltip-id="my-tooltip"
-                                    data-tooltip-content="Edit"
-                                    data-tooltip-place="bottom"
-                                    onClick={() => {
-                                        !saveLoading && setIsEditing(true);
-                                    }}
-                                >
-                                    {saveLoading ? (
-                                        <SmallLoader />
-                                    ) : (
-                                        <FiEdit2 />
-                                    )}
-                                </button>
-                            ))}
+                        <span className="text-2xl ml-3 relative">
+                            <button
+                                className={`absolute ${
+                                    isEditing ? "bottom-16" : "bottom-0 scale-0"
+                                } transition-all duration-100 right-1/2 translate-x-1/2 hover:shadow-md ease-in-out text-neutral-900 hover:bg-indigo-200 dark:text-white rounded-full p-1 dark:hover:bg-neutral-700`}
+                                onClick={handleCodeEditCancle}
+                            >
+                                <FiX />
+                            </button>
+
+                            {user?.uid == board?.uid &&
+                                board &&
+                                (isEditing ? (
+                                    <button
+                                        className="dark:text-white text-2xl transition-all duration-75 outline-dashed outline-2 dark:outline-neutral-600 outline-indigo-400 p-2 md:p-3 md:dark:hover:bg-neutral-800 md:hover:bg-indigo-100 active:scale-95 rounded-lg bg-indigo-200 dark:bg-neutral-700 animate-pulse"
+                                        data-tooltip-id="my-tooltip"
+                                        data-tooltip-content="Save"
+                                        data-tooltip-place="bottom"
+                                        onClick={handleSave}
+                                    >
+                                        <FiSave />
+                                    </button>
+                                ) : (
+                                    <button
+                                        className="dark:text-white text-2xl transition-all duration-75 outline-dashed outline-2 dark:outline-neutral-600 outline-indigo-400 p-2 md:p-3 md:dark:hover:bg-neutral-800 md:hover:bg-indigo-100 active:scale-95 rounded-lg"
+                                        data-tooltip-id="my-tooltip"
+                                        data-tooltip-content="Edit"
+                                        data-tooltip-place="bottom"
+                                        onClick={() => {
+                                            !saveLoading && setIsEditing(true);
+                                        }}
+                                    >
+                                        {saveLoading ? (
+                                            <SmallLoader />
+                                        ) : (
+                                            <FiEdit2 />
+                                        )}
+                                    </button>
+                                ))}
+                        </span>
                     </div>
                 </GridCell>
             ) : (
@@ -468,7 +489,7 @@ export default function BoardPage({ params }) {
                     rowSpan={8}
                     className="relative h-full"
                 >
-                    <FiLock className="text-neutral-800/50 animate-pulse text-[17em] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0" />
+                    <FiLock className="text-indigo-300/60 dark:text-neutral-800/50 animate-pulse text-[17em] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0" />
                     <div className="flex relative justify-center items-center w-full h-full flex-col z-20 gap-3">
                         <p className="text-lg">
                             Opps... this is a private board
