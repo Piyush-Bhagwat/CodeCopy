@@ -209,7 +209,7 @@ export default function BoardPage({ params }) {
                                     setActiveCodeIdx(id);
                                 }}
                                 onChange={(e) => setCurCodeName(e.target.value)}
-                                className={`${
+                                className={`cursor-default ${
                                     activeCodeIdx == id &&
                                     "dark:bg-zinc-700 bg-indigo-300"
                                 } ${
@@ -224,19 +224,22 @@ export default function BoardPage({ params }) {
                                 }
                                 readOnly={!isEditing && activeCodeIdx == id}
                                 maxLength={16}
+                                autoComplete="off" // Add this
+                                spellCheck="false"
                             />
-                            {activeCodeIdx == id && board?.uid === user?.uid && (
-                                <button
-                                    className="text-xl hover:bg-indigo-300 dark:hover:bg-neutral-800 hover:shadow-md active:scale-90 transition-all p-2 rounded-full"
-                                    onClick={() => handleDelete(id)}
-                                >
-                                    {saveLoading ? (
-                                        <SmallLoader />
-                                    ) : (
-                                        <AiOutlineDelete />
-                                    )}
-                                </button>
-                            )}
+                            {activeCodeIdx == id &&
+                                board?.uid === user?.uid && (
+                                    <button
+                                        className="text-xl hover:bg-indigo-300 dark:hover:bg-neutral-800 hover:shadow-md active:scale-90 transition-all p-2 rounded-full"
+                                        onClick={() => handleDelete(id)}
+                                    >
+                                        {saveLoading ? (
+                                            <SmallLoader />
+                                        ) : (
+                                            <AiOutlineDelete />
+                                        )}
+                                    </button>
+                                )}
                         </div>
                     );
                 })}
