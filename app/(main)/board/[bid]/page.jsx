@@ -148,7 +148,7 @@ export default function BoardPage({ params }) {
             setVisiblityLoading(true);
             await updateBoardVisibility(board?.bid, true);
             setVisiblityLoading(false);
-            setBoardVisiblity(false);
+            setBoardVisiblity(true);
         }
     };
 
@@ -157,7 +157,7 @@ export default function BoardPage({ params }) {
             setVisiblityLoading(true);
             await updateBoardVisibility(board?.bid, false);
             setVisiblityLoading(false);
-            setBoardVisiblity(true);
+            setBoardVisiblity(false);
         }
     };
 
@@ -225,7 +225,7 @@ export default function BoardPage({ params }) {
                                 readOnly={!isEditing && activeCodeIdx == id}
                                 maxLength={16}
                             />
-                            {activeCodeIdx == id && (
+                            {activeCodeIdx == id && board?.uid === user?.uid && (
                                 <button
                                     className="text-xl hover:bg-indigo-300 dark:hover:bg-neutral-800 hover:shadow-md active:scale-90 transition-all p-2 rounded-full"
                                     onClick={() => handleDelete(id)}
@@ -276,7 +276,7 @@ export default function BoardPage({ params }) {
                                         )}
                                     </button>
                                 )}
-                                {boardVisiblity ? (
+                                {!boardVisiblity ? (
                                     <button
                                         className={
                                             "p-2 md:dark:hover:bg-neutral-700 md:hover:bg-indigo-300 active:scale-90 rounded-full"
