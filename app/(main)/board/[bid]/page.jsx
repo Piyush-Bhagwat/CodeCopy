@@ -32,6 +32,7 @@ import EditModel from "@/components/EditModel";
 import { AiOutlineDelete, AiOutlineReload } from "react-icons/ai";
 import SmallLoader from "@/components/SmallLoader";
 import Link from "next/link";
+import BoardShortcutHook from "@/components/BoardShortcutHook";
 
 export default function BoardPage({ params }) {
     const className = {
@@ -42,6 +43,9 @@ export default function BoardPage({ params }) {
             "dark:text-white text-2xl transition-all duration-75 outline-dashed outline-2 dark:outline-neutral-600 outline-indigo-400 p-2 md:p-3 md:dark:hover:bg-neutral-800 md:hover:bg-indigo-100 active:scale-95 ml-3 rounded-lg",
         extraClasses: "dark:bg-neutral-600",
     };
+    // BoardShortcutHook();
+
+    
 
     const { dark, user, isEditing, setIsEditing } = useContext(appContext);
     const [code, setCode] = useState("");

@@ -83,6 +83,7 @@ const Mainlayout = ({ children }) => {
                             Profile
                         </Link>
                     )}
+                    <Link className={className.btn} href="/pricing">Price</Link>
                     <button
                         className={className.btn}
                         onClick={() => setDark((p) => !p)}

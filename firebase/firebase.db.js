@@ -120,7 +120,7 @@ const updateCodes = async (bid, codes) => {
 const getBoardInfo = async (uid) => {
     const user = await getUser(uid);
     const bids = user?.boards;
-
+    if(!bids) return [];
     const info = [];
 
     for (const bid of bids) {

@@ -28,6 +28,8 @@ export default function ProfilePage() {
         setBoardLoad(true);
         if (user) {
             const data = await getBoardInfo(user?.uid);
+            console.log("board data: ", data);
+            
             setBoards(data);
         } else {
             setBoards(null);
@@ -148,8 +150,8 @@ export default function ProfilePage() {
                     boardLoad && "animate-pulse"
                 } flex flex-col h-full overflow-auto md:grid grid-cols-5 auto-rows-[100px] gap-3`}
             >
-                {boardLoad && <SmallLoader />}
-                {renderBoards()}
+                {boardLoad ? <SmallLoader /> :
+                boards?.length == 0 ? <h1>Create Your First Board</h1> : renderBoards()}
             </GridCell>
 
             <div className="dark:text-white fixed bottom-5 left-2 text-sm">
